@@ -1,0 +1,18 @@
+{% extends "post/base.html" %}
+{% block content %}
+  <h1>My Posts</h1>
+    <a  href="/posts/new"><button class="btn btn-success" id="new-post-btn">New Entry</button></a>
+  {% for post in posts %}
+    <div class="card">
+      <div class="card-body">
+        <a href="{% url 'post-detail' post.id %}">
+          <h3 class="card-title">{{ post.title }}</h3>
+  <!--Django Date Documentation: https://docs.djangoproject.com/en/2.0/ref/templates/builtins/#date -->
+          <h4 class="card-subtitle">By {{ post.author }} | {{ post.date_posted|date:"D, M d, Y" }} </h4>
+          <p class="card-text">{{ post.content }}</p>
+        </a>
+      </div>
+    </div>
+      <br>
+  {% endfor%}
+{% endblock content %}
