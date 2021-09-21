@@ -1,6 +1,8 @@
 import random
 
+from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -22,6 +24,21 @@ def home(request):
     }
     return render(request, 'post/home.html', context)
 
+class CustomLoginRequiredMixin(LoginRequiredMixin):
+    """ The LoginRequiredMixin extended to add a relevant message to the
+    messages framework by setting the ``permission_denied_message``
+    attribute. """
+    permission_denied_message = 'You have to be logged in to perform that action'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.add_message(request, messages.WARNING,
+                                 self.permission_denied_message)
+            return self.handle_no_permission()
+        return super(CustomLoginRequiredMixin, self).dispatch(
+            request, *args, **kwargs
+        )
+
 class PostListView(ListView):
     model = Post
     template_name = 'post/home.html' # <app>/<model>_<viewtype>/html
@@ -31,17 +48,19 @@ class PostListView(ListView):
 class PostDetailView(DetailView):
     model = Post
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(CustomLoginRequiredMixin, DeleteView):
+    login_url = '/login/'
+
     model = Post
     success_url = "/"
 
 
-class PostCreateView(CreateView):
+class PostCreateView(CustomLoginRequiredMixin, CreateView):
     # Redirect if not authenticated
     login_url = '/login/'
 
     model = Post
-    fields = ['title', 'content']
+    fields = ['title', 'content', 'post_type']
 
     gratitude_question = "What are you grateful for today?"
     reflection_questions = [
@@ -62,17 +81,22 @@ class PostCreateView(CreateView):
         for k, v in self.request.GET.items():
             if v == '0':  # gratitude post
                 initial.update({'title': self.gratitude_question})
+                initial.update({'post_type': "Gratitude"})
             elif v == '1':  # reflective question
                 initial.update({'title': random.choice(self.reflection_questions)})
+                initial.update({'post_type': "Question"})
             else:
                 initial.update({'title': ""})
+                initial.update({'post_type': "Personal"})
         return initial
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(CustomLoginRequiredMixin, UpdateView):
+    login_url = '/login/'
+
     model = Post
     fields = ['title', 'content']
     
@@ -86,8 +110,10 @@ class SignUpView(CreateView):
     template_name = 'registration/signup.html'
 
 def login(request):
-    next = "posts/"
     return render(request, 'registration/login.html', {'title': 'User Login'})
+
+def logout(request):
+    return render(request, 'registration/logout.html', {'title': 'User Logout'})
 
 def about(request):
     # return HttpResponse('<h1>Diary About</h1>')
