@@ -45,6 +45,37 @@ class PostListView(ListView):
     context_object_name = 'posts'
     ordering = ['-date_posted']
 
+
+class GratitudePostListView(ListView):
+    model = Post
+
+    template_name = 'post/home.html' # <app>/<model>_<viewtype>/html
+    context_object_name = 'posts'
+    ordering = ['-date_posted']
+
+    def get_queryset(self):
+        return Post.objects.filter(post_type="Gratitude")
+
+class QuestionPostListView(ListView):
+    model = Post
+
+    template_name = 'post/home.html' # <app>/<model>_<viewtype>/html
+    context_object_name = 'posts'
+    ordering = ['-date_posted']
+
+    def get_queryset(self):
+        return Post.objects.filter(post_type="Question")
+
+class PersonalPostListView(ListView):
+    model = Post
+
+    template_name = 'post/home.html' # <app>/<model>_<viewtype>/html
+    context_object_name = 'posts'
+    ordering = ['-date_posted']
+
+    def get_queryset(self):
+        return Post.objects.filter(post_type="Personal")
+
 class PostDetailView(DetailView):
     model = Post
 
