@@ -64,7 +64,9 @@ class QuestionPostListView(ListView):
     ordering = ['-date_posted']
 
     def get_queryset(self):
-        return Post.objects.filter(post_type="Question")
+        user_items = Post.objects.filter(post_type="Question").filter(author=self.request.user) #.values('title')
+        items = Post.objects.filter(title__in=list(user_items))
+        return items
 
 class PersonalPostListView(ListView):
     model = Post
