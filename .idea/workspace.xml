@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="900c5b1a-92ec-432f-a505-0075558b3ec9" name="Changes" comment="" />
+    <list default="true" id="900c5b1a-92ec-432f-a505-0075558b3ec9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -128,10 +130,9 @@
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-        <env name="DJANGO_SETTINGS_MODULE" value="settings" />
+        <env name="DJANGO_SETTINGS_MODULE" value="vibe.settings" />
       </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/env_site/bin/python" />
+      <option name="SDK_HOME" value="/usr/local/bin/python3.9" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -162,6 +163,7 @@
       <workItem from="1632026415184" duration="6075000" />
       <workItem from="1632132502440" duration="3744000" />
       <workItem from="1632397710737" duration="1518000" />
+      <workItem from="1632399513112" duration="73000" />
     </task>
     <servers />
   </component>
