@@ -41,13 +41,16 @@ class CustomLoginRequiredMixin(LoginRequiredMixin):
 
 class PostListView(ListView):
     model = Post
+    login_url = '/login/'
+    
     template_name = 'post/home.html' # <app>/<model>_<viewtype>/html
     context_object_name = 'posts'
     ordering = ['-date_posted']
 
 
-class GratitudePostListView(ListView):
+class GratitudePostListView(CustomLoginRequiredMixin, ListView):
     model = Post
+    login_url = '/login/'
 
     template_name = 'post/home.html' # <app>/<model>_<viewtype>/html
     context_object_name = 'posts'
@@ -56,8 +59,9 @@ class GratitudePostListView(ListView):
     def get_queryset(self):
         return Post.objects.filter(post_type="Gratitude")
 
-class QuestionPostListView(ListView):
+class QuestionPostListView(CustomLoginRequiredMixin, ListView):
     model = Post
+    login_url = '/login/'
 
     template_name = 'post/home.html' # <app>/<model>_<viewtype>/html
     context_object_name = 'posts'
@@ -68,8 +72,9 @@ class QuestionPostListView(ListView):
         items = Post.objects.filter(title__in=list(user_items))
         return items
 
-class PersonalPostListView(ListView):
+class PersonalPostListView(CustomLoginRequiredMixin, ListView):
     model = Post
+    login_url = '/login/'
 
     template_name = 'post/home.html' # <app>/<model>_<viewtype>/html
     context_object_name = 'posts'
@@ -78,7 +83,7 @@ class PersonalPostListView(ListView):
     def get_queryset(self):
         return Post.objects.filter(post_type="Personal")
 
-class PostDetailView(DetailView):
+class PostDetailView(CustomLoginRequiredMixin, DetailView):
     model = Post
 
 class PostDeleteView(CustomLoginRequiredMixin, DeleteView):
